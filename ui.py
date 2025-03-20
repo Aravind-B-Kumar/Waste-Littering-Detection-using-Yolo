@@ -29,7 +29,7 @@ def main_page():
         model_object = YOLO(r"garbage_model.pt")
         
         # Open the webcam
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
         if not cap.isOpened():
             st.error("Error: Could not open webcam.")
             return
@@ -42,7 +42,7 @@ def main_page():
         
         # Configuration
         HAND_OBJECT_DISTANCE = 150
-        LITTER_CLASSES = ['bottle', 'bag', 'plastic bag', 'cup', 'wrapper', 'cell phone', 'trash', 'waste', 'garbage', 'litter']
+        LITTER_CLASSES = ['garbage', 'rubbish']
         DROP_VELOCITY_THRESHOLD = 5
         history_length = 15
         DROP_COOLDOWN_FRAMES = 30

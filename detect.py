@@ -6,13 +6,13 @@ from collections import defaultdict
 def detect_waste_dumping():
     # Initialize models
     model_pose = YOLO('yolo11l-pose.pt')
-    model_object = YOLO(r"garbage_model.pt")
+    model_object = YOLO(r"new_garbage_model.pt")
     
     # Print available classes from your model to verify
     print(f"Available detection classes: {model_object.names}")
     
     # Open webcam
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     
     if not cap.isOpened():
         print("Error: Could not open camera")
