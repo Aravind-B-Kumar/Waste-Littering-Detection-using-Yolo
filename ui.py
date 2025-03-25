@@ -1,35 +1,69 @@
 import streamlit as st
+from db.database import Database
+from time import sleep
+
+import streamlit as st
 from ultralytics import YOLO
 import cv2
 import numpy as np
 from collections import defaultdict
 
-# Login Page
+db = Database()
+
 def login_page():
     st.title("Login Page")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     
     if st.button("Login"):
-        if username == "admin" and password == "123":
+        if db.fetchOne('SELECT 1 FROM credentials WHERE username=? AND password=?',username,password):
             st.session_state.logged_in = True
             st.success("Login successful! Redirecting...")
-            st.rerun()  # Use st.rerun() to refresh the page
+            st.session_state.page = "main"  # Set to main page
+            st.rerun()
         else:
             st.error("Invalid username or password")
+    
+    if st.button("Don't have an account? Sign up"):
+        st.session_state.page = "signup"  # Switch to signup page
+        st.rerun()
 
-# Main Page with Waste Dumping Detection
+
+def signup_page():
+    st.title("Sign Up Page")
+    username = st.text_input("Choose a Username")
+    password = st.text_input("Choose a Password", type="password")
+    
+    if st.button("Sign Up"):
+        if db.fetchOne('SELECT 1 FROM credentials WHERE username=?',username):
+            st.error("Username already exists. Please choose a different one.")
+        else:
+            db.execute("INSERT INTO credentials(username,password) VALUES(?,?)",username,password)
+            st.success("Sign up successful! You can now log in.")
+            st.session_state.page = "login"     
+            sleep(1)
+            st.rerun()
+
+    if st.button("Already have an account? Log in"):
+        st.session_state.page = "login"  
+        st.rerun()
+
+
 def main_page():
     st.title("Waste Dumping Detection")
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.page = "login"  # Redirect to login page
+        st.rerun()
     
     # Button to start the webcam
     if st.button("Start Webcam", key="start_webcam"):
         # Initialize models
-        model_pose = YOLO('yolo11l-pose.pt')
-        model_object = YOLO(r"garbage_model.pt")
+        model_pose = YOLO(r'models/yolo11l-pose.pt')
+        model_object = YOLO(r"models/garbage_model.pt")
         
         # Open the webcam
-        cap = cv2.VideoCapture(1)
+        cap = cv2.VideoCapture(0)
         if not cap.isOpened():
             st.error("Error: Could not open webcam.")
             return
@@ -221,15 +255,20 @@ def main_page():
         cap.release()
         st.write("Webcam stopped.")
 
-# Main App Logic
 def main():
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
-    
-    if not st.session_state.logged_in:
-        login_page()
+    if "page" not in st.session_state:
+        st.session_state.page = "login"  # Default to login page
+
+    if st.session_state.logged_in:
+        main_page()  # Show main application logic
     else:
-        main_page()
+        if st.session_state.page == "login":
+            login_page()
+        else:
+            signup_page()
+
 
 if __name__ == "__main__":
     main()
