@@ -3,7 +3,7 @@ import numpy as np
 from ultralytics import YOLO
 from collections import defaultdict
 import os
-import datetime
+from datetime import datetime
 
 def detect_waste_dumping():
     # Initialize models
@@ -20,6 +20,9 @@ def detect_waste_dumping():
         print("Error: Could not open camera")
         return
     # Get camera properties
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     print(f"Camera resolution: {frame_width}x{frame_height}")
@@ -297,7 +300,7 @@ def detect_waste_dumping():
                                     # 2. The person is still visible in the frame
                                     if not image_captured and dropping_person_id in person_bboxes:
                                         # Get timestamp for filename
-                                        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                                        timestamp = datetime.now().strftime(r"%d-%m-%y__%I.%M%p").lower()
                                         
                                         # Get person's bounding box
                                         px1, py1, px2, py2 = person_bboxes[dropping_person_id]
