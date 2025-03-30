@@ -471,7 +471,7 @@ def main_page():
                                             # 2. The person is still visible in the frame
                                             if not image_captured and dropping_person_id in person_bboxes:
                                                 # Get timestamp for filename
-                                                timestamp = datetime.now().strftime(r"%Y%m%d_%H%M%S")
+                                                timestamp = datetime.now().strftime(r"%d-%m-%y__%I.%M%p")
                                                 
                                                 # Get person's bounding box
                                                 px1, py1, px2, py2 = person_bboxes[dropping_person_id]
