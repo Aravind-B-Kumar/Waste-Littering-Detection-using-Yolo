@@ -6,10 +6,10 @@ import cv2
 # r"D:\MiniProject\dataset trash\GarbageDetectionAPI.v1i.yolov11\runs\detect\train2\weights\last.pt"
 
 # Load the trained model
-model = YOLO(r"D:\MiniProject\dataset trash\GarbageDetectionAPI.v1i.yolov11\runs\detect\train6\weights\last.pt")#r"D:\MiniProject\dataset trash\QP.LPDE.v2i.yolov11\runs\detect\train3\weights\best.pt") #YOLO(r"D:\MiniProject\littering\Littering.v8-yolotiny.yolov11\runs\detect\train3\weights\last.pt")
+model = YOLO(r"D:\MiniProject\dataset trash\plastic bag detection.v1i.yolov11\runs\detect\train3\weights\last.pt")#r"D:\MiniProject\dataset trash\QP.LPDE.v2i.yolov11\runs\detect\train3\weights\best.pt") #YOLO(r"D:\MiniProject\littering\Littering.v8-yolotiny.yolov11\runs\detect\train3\weights\last.pt")
 
 # Open the webcam
-cap = cv2.VideoCapture(1)#"http://192.168.137.138:8080/video")
+cap = cv2.VideoCapture(r"C:\Users\Admin\Downloads\WhatsApp Video 2025-03-28 at 12.07.47 PM.mp4")#"http://192.168.137.138:8080/video")
 if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()

@@ -8,20 +8,20 @@ from datetime import datetime
 def detect_waste_dumping():
     # Initialize models
     model_pose = YOLO(r'models/yolo11l-pose.pt')
-    model_object = YOLO(r"models/new_garbage_model.pt")
+    model_object = YOLO(r"models/garbage_model.pt")
     
     # Print available classes from your model to verify
     print(f"Available detection classes: {model_object.names}")
     
     # Open webcam
     cap = cv2.VideoCapture(0)
-    
     if not cap.isOpened():
         print("Error: Could not open camera")
         return
+    
     # Get camera properties
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -44,7 +44,7 @@ def detect_waste_dumping():
     HAND_OBJECT_DISTANCE = 150 # Maximum pixel distance between hand and object
     
     # Expand LITTER_CLASSES to include more variations of waste items
-    LITTER_CLASSES = ['garbage', 'rubbish']
+    LITTER_CLASSES = ['garbage', 'paper', 'plastic']
     
     DROP_VELOCITY_THRESHOLD = 5  # Minimum downward speed to consider as dropping
     
